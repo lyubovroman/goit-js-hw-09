@@ -6,9 +6,9 @@ formEl.addEventListener('submit', onSubmit);
 function onSubmit(event) {
   event.preventDefault();
 
-  const delay = formEl.delay.value;
-  const step = formEl.step.value;
-  const amount = formEl.amount.value;
+  const delay = Number(formEl.delay.value);
+  const step = Number(formEl.step.value);
+  const amount = Number(formEl.amount.value);
 
   function createPromise(position, delay) {
     return new Promise((resolve, reject) => {

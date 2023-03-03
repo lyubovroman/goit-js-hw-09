@@ -14,23 +14,26 @@ const refs = {
 
 refs.btnStartEl.addEventListener('click', onStartBtnClick)
 
- refs.btnStartEl.disabled = true;
   
+let selectedDate = null;
 
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onClose() {
+  onClose(selectedDates) {
+    selectedDate = selectedDates[0];
     const isChosenDate = dateOptions();
     if (isChosenDate < 0) {
       
       Notiflix.Notify.failure('please choose valid date');
       return;
     } 
+    
     Notiflix.Notify.success('Удача, press "Начало"');
     refs.btnStartEl.disabled = false;
+    
   },
 };
 
@@ -44,7 +47,10 @@ function clockRestruct({ days, hours, minutes, seconds }) {
 }
 
 function onStartBtnClick(event) {
+ 
   refs.btnStartEl.disabled = true;
+  refs.inputEl.disabled = true;
+  
   setInterval(() => {
     const changeOfTimeInterface = dateOptions();
     
@@ -54,13 +60,13 @@ function onStartBtnClick(event) {
     const timeComponents = convertMs(changeOfTimeInterface);
     return clockRestruct(timeComponents);
     
-  },1000)
- 
+  }, 1000)
+  
 };
 
 function dateOptions(event) {
-const inputData = new Date(refs.inputEl.value).getTime();
-const currentTime = new Date().getTime();
+  const inputData = selectedDate;
+  const currentTime = Date.now();
   const deltaTime = inputData - currentTime;
   return deltaTime;
 };
